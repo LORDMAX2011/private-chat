@@ -34,14 +34,13 @@ io.on('connection', (socket) => {
       const pastMessages = await Message.find({ room }).sort({ timestamp: 1 });
       
       const formattedHistory = pastMessages.map(msg => ({
+        id: msg._id,
         sender: msg.sender,
         text: msg.text,
         time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }));
 
       socket.emit('load-history', formattedHistory);
-
-      // System notification for joining
       socket.to(room).emit('system-message', `${username} joined the chat`);
     } catch (err) {
       console.error('Error fetching history:', err);
@@ -58,6 +57,7 @@ io.on('connection', (socket) => {
       await newMessage.save();
 
       const payload = {
+        id: newMessage._id,
         sender: data.sender,
         text: data.text,
         time: new Date(newMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -66,6 +66,16 @@ io.on('connection', (socket) => {
       io.to(data.room).emit('receive-message', payload);
     } catch (err) {
       console.error('Error saving message:', err);
+    }
+  });
+
+  // Handle message deletion
+  socket.on('delete-message', async ({ messageId, room }) => {
+    try {
+      await Message.findByIdAndDelete(messageId);
+      io.to(room).emit('message-deleted', messageId);
+    } catch (err) {
+      console.error('Error deleting message:', err);
     }
   });
 
