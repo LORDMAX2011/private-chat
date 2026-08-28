@@ -69,13 +69,23 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Handle message deletion
+  // Handle single message deletion
   socket.on('delete-message', async ({ messageId, room }) => {
     try {
       await Message.findByIdAndDelete(messageId);
       io.to(room).emit('message-deleted', messageId);
     } catch (err) {
       console.error('Error deleting message:', err);
+    }
+  });
+
+  // Handle clear all messages in a room
+  socket.on('delete-all-messages', async (room) => {
+    try {
+      await Message.deleteMany({ room });
+      io.to(room).emit('all-messages-deleted');
+    } catch (err) {
+      console.error('Error clearing messages:', err);
     }
   });
 

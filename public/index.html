@@ -31,8 +31,31 @@
       flex-direction: column;
       position: relative;
     }
-    h2 { font-size: 1.5rem; text-align: center; margin-bottom: 20px; color: #38bdf8; font-weight: 700; }
     
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .chat-header h2 { font-size: 1.3rem; color: #38bdf8; font-weight: 700; }
+    
+    .header-actions { display: flex; gap: 6px; }
+    .action-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .action-btn:hover { background: #475569; }
+    .action-btn.danger { background: #991b1b; color: #fca5a5; }
+    .action-btn.danger:hover { background: #b91c1c; }
+
     input {
       width: 100%;
       padding: 12px 16px;
@@ -47,7 +70,8 @@
     }
     input:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
     
-    button {
+    button.primary-btn {
+      width: 100%;
       padding: 12px 18px;
       border: none;
       border-radius: 10px;
@@ -58,8 +82,8 @@
       cursor: pointer;
       transition: transform 0.1s, background 0.2s;
     }
-    button:hover { background: linear-gradient(135deg, #0369a1, #1d4ed8); }
-    button:active { transform: scale(0.98); }
+    button.primary-btn:hover { background: linear-gradient(135deg, #0369a1, #1d4ed8); }
+    button.primary-btn:active { transform: scale(0.98); }
 
     #chat-box::-webkit-scrollbar { width: 6px; }
     #chat-box::-webkit-scrollbar-track { background: transparent; }
@@ -163,6 +187,9 @@
       background: #334155;
       padding: 0 12px;
       border-radius: 10px;
+      border: none;
+      color: #fff;
+      cursor: pointer;
     }
     .emoji-picker {
       display: none;
@@ -183,21 +210,28 @@
 <body>
 
   <div class="card" id="setup">
-    <h2>Private Chat</h2>
+    <h2 style="text-align: center; margin-bottom: 20px; color: #38bdf8;">Private Chat</h2>
     <input type="text" id="username" placeholder="Your Name">
     <input type="text" id="room" placeholder="Secret Room ID (e.g., room-123)">
-    <button onclick="joinRoom()">Join Room</button>
+    <button class="primary-btn" onclick="joinRoom()">Join Room</button>
   </div>
 
   <div class="card" id="chat" style="display:none;">
-    <h2 id="room-title">Room</h2>
+    <div class="chat-header">
+      <h2 id="room-title">Room</h2>
+      <div class="header-actions">
+        <button class="action-btn danger" onclick="deleteAllMessages()">Clear All</button>
+        <button class="action-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+    
     <div id="chat-box"></div>
     <div id="typing-indicator"></div>
     
     <div class="input-row">
       <button class="emoji-btn" onclick="toggleEmojiPicker()">😊</button>
       <input type="text" id="message-input" placeholder="Type a message...">
-      <button onclick="sendMessage()">Send</button>
+      <button class="primary-btn" style="width: auto;" onclick="sendMessage()">Send</button>
 
       <div class="emoji-picker" id="emoji-picker">
         <span onclick="addEmoji('👍')">👍</span>
@@ -218,18 +252,16 @@
     const emojiPicker = document.getElementById('emoji-picker');
     let typingTimeout;
 
-    // Web Audio API synth chime sound
     function playNotificationSound() {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const ctx = new AudioContext();
-        
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Note D5
-        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // Note A5
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
 
         gain.gain.setValueAtTime(0.1, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
@@ -255,6 +287,10 @@
       }
     }
 
+    function logout() {
+      location.reload();
+    }
+
     function sendMessage() {
       const text = messageInput.value.trim();
       if (text) {
@@ -268,6 +304,12 @@
     function deleteMessage(messageId) {
       if (confirm("Delete this message?")) {
         socket.emit('delete-message', { messageId, room: currentRoom });
+      }
+    }
+
+    function deleteAllMessages() {
+      if (confirm("Are you sure you want to clear ALL messages in this room?")) {
+        socket.emit('delete-all-messages', currentRoom);
       }
     }
 
@@ -327,6 +369,10 @@
       if (targetMsg) {
         targetMsg.remove();
       }
+    });
+
+    socket.on('all-messages-deleted', () => {
+      document.getElementById('chat-box').innerHTML = '';
     });
 
     function appendMessage({ id, sender, text, time }, playSound = false) {
