@@ -33,7 +33,8 @@
       myName = document.getElementById('username').value;
       currentRoom = document.getElementById('room').value;
       if (myName && currentRoom) {
-        socket.emit('join-room', currentRoom);
+        // Updated to pass an object with room and username to match server logic
+        socket.emit('join-room', { room: currentRoom, username: myName });
         document.getElementById('setup').style.display = 'none';
         document.getElementById('chat').style.display = 'block';
       }
@@ -41,16 +42,26 @@
 
     function sendMessage() {
       const input = document.getElementById('message-input');
-      const message = input.value;
-      if (message) {
-        appendMessage(`You: ${message}`);
-        socket.emit('send-message', { roomId: currentRoom, message, sender: myName });
+      const text = input.value;
+      if (text) {
+        // Updated payload keys to match backend schema (room, text, sender)
+        socket.emit('send-message', { room: currentRoom, text: text, sender: myName });
         input.value = '';
       }
     }
 
-    socket.on('receive-message', ({ message, sender }) => {
-      appendMessage(`${sender}: ${message}`);
+    // Load past message history sent by MongoDB on join
+    socket.on('load-history', (messages) => {
+      messages.forEach((msg) => {
+        const prefix = (msg.sender === myName) ? 'You' : msg.sender;
+        appendMessage(`${prefix}: ${msg.text}`);
+      });
+    });
+
+    // Listen for incoming live messages
+    socket.on('receive-message', (data) => {
+      const prefix = (data.sender === myName) ? 'You' : data.sender;
+      appendMessage(`${prefix}: ${data.text}`);
     });
 
     function appendMessage(text) {
