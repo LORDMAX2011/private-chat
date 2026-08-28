@@ -146,6 +146,14 @@
       }
     }
 
+    // Enter key event listener to send messages
+    messageInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
     // Handle typing notification events
     messageInput.addEventListener('input', () => {
       socket.emit('typing', { room: currentRoom, username: myName });
