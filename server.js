@@ -7,9 +7,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Connect to MongoDB Atlas
-// Replace with your real DB user and password
-const MONGO_URI = "mongodb+srv://MAX:max2011@cluster0.uvhk3hz.mongodb.net/private-chat?retryWrites=true&w=majority";
+// Read the database URI securely from environment variables
+const MONGO_URI = process.env.MONGO_URI;
+
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
