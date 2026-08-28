@@ -17,7 +17,6 @@
       align-items: center;
     }
 
-    /* Glassmorphism Card */
     .card {
       background: rgba(30, 41, 59, 0.7);
       backdrop-filter: blur(16px);
@@ -62,7 +61,6 @@
     button:hover { background: linear-gradient(135deg, #0369a1, #1d4ed8); }
     button:active { transform: scale(0.98); }
 
-    /* Scrollbar */
     #chat-box::-webkit-scrollbar { width: 6px; }
     #chat-box::-webkit-scrollbar-track { background: transparent; }
     #chat-box::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
@@ -77,12 +75,12 @@
       margin-bottom: 8px;
     }
     
-    /* Animations & Bubbles */
     .msg-wrapper {
       display: flex;
       align-items: flex-end;
       gap: 8px;
       animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      position: relative;
     }
     .msg-wrapper.me { flex-direction: row-reverse; }
 
@@ -113,6 +111,7 @@
       font-size: 0.92rem;
       line-height: 1.4;
       word-wrap: break-word;
+      position: relative;
     }
     .msg.me {
       background: #0284c7;
@@ -126,6 +125,19 @@
     }
     .msg .sender { font-size: 0.72rem; font-weight: 600; margin-bottom: 2px; opacity: 0.85; }
     .msg .time { font-size: 0.65rem; text-align: right; margin-top: 4px; opacity: 0.7; }
+
+    .delete-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+      opacity: 0.6;
+      padding: 0 4px;
+      transition: opacity 0.2s;
+    }
+    .delete-btn:hover { opacity: 1; }
+    .msg-wrapper:hover .delete-btn { display: inline-block; }
 
     .system-msg {
       text-align: center;
@@ -206,6 +218,32 @@
     const emojiPicker = document.getElementById('emoji-picker');
     let typingTimeout;
 
+    // Web Audio API synth chime sound
+    function playNotificationSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Note D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // Note A5
+
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } catch (e) {
+        console.error('Audio playback error:', e);
+      }
+    }
+
     function joinRoom() {
       myName = document.getElementById('username').value.trim();
       currentRoom = document.getElementById('room').value.trim();
@@ -224,6 +262,12 @@
         messageInput.value = '';
         socket.emit('stop-typing', { room: currentRoom });
         emojiPicker.style.display = 'none';
+      }
+    }
+
+    function deleteMessage(messageId) {
+      if (confirm("Delete this message?")) {
+        socket.emit('delete-message', { messageId, room: currentRoom });
       }
     }
 
@@ -270,20 +314,29 @@
 
     socket.on('load-history', (messages) => {
       document.getElementById('chat-box').innerHTML = '';
-      messages.forEach((msg) => appendMessage(msg));
+      messages.forEach((msg) => appendMessage(msg, false));
     });
 
     socket.on('receive-message', (data) => {
-      appendMessage(data);
+      const isFromSomeoneElse = data.sender !== myName;
+      appendMessage(data, isFromSomeoneElse);
     });
 
-    function appendMessage({ sender, text, time }) {
+    socket.on('message-deleted', (messageId) => {
+      const targetMsg = document.getElementById(`msg-${messageId}`);
+      if (targetMsg) {
+        targetMsg.remove();
+      }
+    });
+
+    function appendMessage({ id, sender, text, time }, playSound = false) {
       const box = document.getElementById('chat-box');
       const isMe = sender === myName;
       const initial = sender ? sender.charAt(0) : '?';
       
       const wrapper = document.createElement('div');
       wrapper.className = `msg-wrapper ${isMe ? 'me' : 'them'}`;
+      wrapper.id = `msg-${id}`;
 
       wrapper.innerHTML = `
         <div class="avatar" style="background-color: ${getColor(sender)}">${initial}</div>
@@ -292,9 +345,14 @@
           <div>${text}</div>
           <div class="time">${time || ''}</div>
         </div>
+        ${isMe ? `<button class="delete-btn" onclick="deleteMessage('${id}')">🗑️</button>` : ''}
       `;
       box.appendChild(wrapper);
       box.scrollTop = box.scrollHeight;
+
+      if (playSound) {
+        playNotificationSound();
+      }
     }
 
     function getColor(name) {
