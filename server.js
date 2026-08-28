@@ -7,14 +7,12 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Connection string pulled securely from Render environment variables
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Database schema including room, sender, message text, and timestamp
 const messageSchema = new mongoose.Schema({
   room: String,
   sender: String,
@@ -27,9 +25,10 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
 
-  // Load chat history when entering a room
   socket.on('join-room', async ({ room, username }) => {
     socket.join(room);
+    socket.username = username;
+    socket.room = room;
 
     try {
       const pastMessages = await Message.find({ room }).sort({ timestamp: 1 });
@@ -41,12 +40,14 @@ io.on('connection', (socket) => {
       }));
 
       socket.emit('load-history', formattedHistory);
+
+      // System notification for joining
+      socket.to(room).emit('system-message', `${username} joined the chat`);
     } catch (err) {
       console.error('Error fetching history:', err);
     }
   });
 
-  // Save new messages to DB and broadcast with formatted timestamp
   socket.on('send-message', async (data) => {
     try {
       const newMessage = new Message({
@@ -68,13 +69,18 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Typing status events
   socket.on('typing', (data) => {
     socket.to(data.room).emit('user-typing', data.username);
   });
 
   socket.on('stop-typing', (data) => {
     socket.to(data.room).emit('user-stopped-typing');
+  });
+
+  socket.on('disconnect', () => {
+    if (socket.room && socket.username) {
+      io.to(socket.room).emit('system-message', `${socket.username} left the chat`);
+    }
   });
 });
 
