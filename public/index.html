@@ -2,72 +2,188 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Private Chat</title>
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; }
-    #chat-box { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
-    input, button { padding: 10px; margin-top: 5px; width: 100%; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      color: #f8fafc;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .card {
+      background: #1e293b;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    h2 { font-size: 1.5rem; text-align: center; margin-bottom: 20px; color: #38bdf8; }
+    
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    input:focus { border-color: #38bdf8; }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #0284c7;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #0369a1; }
+
+    #chat-box {
+      height: 320px;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .msg {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .msg.me {
+      align-self: flex-end;
+      background: #0284c7;
+      color: #fff;
+      border-bottom-right-radius: 2px;
+    }
+    .msg.them {
+      align-self: flex-start;
+      background: #334155;
+      color: #f8fafc;
+      border-bottom-left-radius: 2px;
+    }
+    .msg .sender { font-size: 0.75rem; font-weight: bold; margin-bottom: 3px; opacity: 0.8; }
+    .msg .time { font-size: 0.65rem; text-align: right; margin-top: 4px; opacity: 0.7; }
+
+    #typing-indicator {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #94a3b8;
+      height: 20px;
+      margin-bottom: 5px;
+    }
+    .input-row { display: flex; gap: 8px; }
+    .input-row input { margin-bottom: 0; }
+    .input-row button { width: auto; padding: 0 20px; }
   </style>
 </head>
 <body>
-  <h2>Private Chat</h2>
 
-  <div id="setup">
+  <div class="card" id="setup">
+    <h2>Private Chat</h2>
     <input type="text" id="username" placeholder="Your Name">
     <input type="text" id="room" placeholder="Secret Room ID (e.g., room-123)">
     <button onclick="joinRoom()">Join Room</button>
   </div>
 
-  <div id="chat" style="display:none;">
+  <div class="card" id="chat" style="display:none;">
+    <h2 id="room-title">Room</h2>
     <div id="chat-box"></div>
-    <input type="text" id="message-input" placeholder="Type a message...">
-    <button onclick="sendMessage()">Send</button>
+    <div id="typing-indicator"></div>
+    <div class="input-row">
+      <input type="text" id="message-input" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
     let currentRoom = '', myName = '';
+    const messageInput = document.getElementById('message-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+    let typingTimeout;
 
     function joinRoom() {
-      myName = document.getElementById('username').value;
-      currentRoom = document.getElementById('room').value;
+      myName = document.getElementById('username').value.trim();
+      currentRoom = document.getElementById('room').value.trim();
       if (myName && currentRoom) {
-        // Updated to pass an object with room and username to match server logic
+        document.getElementById('room-title').textContent = currentRoom;
         socket.emit('join-room', { room: currentRoom, username: myName });
         document.getElementById('setup').style.display = 'none';
-        document.getElementById('chat').style.display = 'block';
+        document.getElementById('chat').style.display = 'flex';
       }
     }
 
     function sendMessage() {
-      const input = document.getElementById('message-input');
-      const text = input.value;
+      const text = messageInput.value.trim();
       if (text) {
-        // Updated payload keys to match backend schema (room, text, sender)
         socket.emit('send-message', { room: currentRoom, text: text, sender: myName });
-        input.value = '';
+        messageInput.value = '';
+        socket.emit('stop-typing', { room: currentRoom });
       }
     }
 
-    // Load past message history sent by MongoDB on join
+    // Handle typing notification events
+    messageInput.addEventListener('input', () => {
+      socket.emit('typing', { room: currentRoom, username: myName });
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        socket.emit('stop-typing', { room: currentRoom });
+      }, 2000);
+    });
+
+    socket.on('user-typing', (username) => {
+      typingIndicator.textContent = `${username} is typing...`;
+    });
+
+    socket.on('user-stopped-typing', () => {
+      typingIndicator.textContent = '';
+    });
+
+    // History & message rendering handlers
     socket.on('load-history', (messages) => {
-      messages.forEach((msg) => {
-        const prefix = (msg.sender === myName) ? 'You' : msg.sender;
-        appendMessage(`${prefix}: ${msg.text}`);
-      });
+      document.getElementById('chat-box').innerHTML = '';
+      messages.forEach((msg) => appendMessage(msg));
     });
 
-    // Listen for incoming live messages
     socket.on('receive-message', (data) => {
-      const prefix = (data.sender === myName) ? 'You' : data.sender;
-      appendMessage(`${prefix}: ${data.text}`);
+      appendMessage(data);
     });
 
-    function appendMessage(text) {
+    function appendMessage({ sender, text, time }) {
       const box = document.getElementById('chat-box');
-      const msgEl = document.createElement('p');
-      msgEl.textContent = text;
+      const msgEl = document.createElement('div');
+      const isMe = sender === myName;
+      
+      msgEl.className = `msg ${isMe ? 'me' : 'them'}`;
+      msgEl.innerHTML = `
+        <div class="sender">${isMe ? 'You' : sender}</div>
+        <div>${text}</div>
+        <div class="time">${time || ''}</div>
+      `;
       box.appendChild(msgEl);
       box.scrollTop = box.scrollHeight;
     }

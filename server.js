@@ -7,14 +7,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Read the database URI securely from environment variables
+// Connection string pulled securely from Render environment variables
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Define how messages are stored in the database
+// Database schema including room, sender, message text, and timestamp
 const messageSchema = new mongoose.Schema({
   room: String,
   sender: String,
@@ -27,29 +27,54 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
 
-  // When a user enters a room
+  // Load chat history when entering a room
   socket.on('join-room', async ({ room, username }) => {
     socket.join(room);
 
-    // Fetch previous messages for this room from MongoDB
-    const pastMessages = await Message.find({ room }).sort({ timestamp: 1 });
-    
-    // Send only to the joining user
-    socket.emit('load-history', pastMessages);
+    try {
+      const pastMessages = await Message.find({ room }).sort({ timestamp: 1 });
+      
+      const formattedHistory = pastMessages.map(msg => ({
+        sender: msg.sender,
+        text: msg.text,
+        time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }));
+
+      socket.emit('load-history', formattedHistory);
+    } catch (err) {
+      console.error('Error fetching history:', err);
+    }
   });
 
-  // When a user sends a message
+  // Save new messages to DB and broadcast with formatted timestamp
   socket.on('send-message', async (data) => {
-    // Save to database
-    const newMessage = new Message({
-      room: data.room,
-      sender: data.sender,
-      text: data.text
-    });
-    await newMessage.save();
+    try {
+      const newMessage = new Message({
+        room: data.room,
+        sender: data.sender,
+        text: data.text
+      });
+      await newMessage.save();
 
-    // Send message to everyone in the room
-    io.to(data.room).emit('receive-message', data);
+      const payload = {
+        sender: data.sender,
+        text: data.text,
+        time: new Date(newMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      io.to(data.room).emit('receive-message', payload);
+    } catch (err) {
+      console.error('Error saving message:', err);
+    }
+  });
+
+  // Typing status events
+  socket.on('typing', (data) => {
+    socket.to(data.room).emit('user-typing', data.username);
+  });
+
+  socket.on('stop-typing', (data) => {
+    socket.to(data.room).emit('user-stopped-typing');
   });
 });
 
