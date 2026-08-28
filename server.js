@@ -8,7 +8,8 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 // Connect to MongoDB Atlas
-const MONGO_URI = "mongodb+srv://MAX:<db_password>@cluster0.uvhk3hz.mongodb.net/?appName=Cluster0";
+// Replace with your real DB user and password
+const MONGO_URI = "mongodb+srv://MAX:max2011@cluster0.uvhk3hz.mongodb.net/private-chat?retryWrites=true&w=majority";
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
