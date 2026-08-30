@@ -1153,6 +1153,620 @@
       border-color: rgba(2, 132, 199, 0.3);
       color: #0284c7;
     }
+
+    /* Pin Messages */
+    .pinned-messages-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 320px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-light);
+      z-index: 500;
+      animation: slideInRight 0.3s ease-out;
+      overflow-y: auto;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .pinned-messages-panel.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pinned-header {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .pinned-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .pinned-item {
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid rgba(2, 132, 199, 0.3);
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pinned-item:hover {
+      background: rgba(2, 132, 199, 0.2);
+      border-color: var(--accent);
+    }
+
+    .pinned-message-text {
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .pinned-message-meta {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+    }
+
+    .pin-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    /* User Profiles */
+    .profile-modal-content {
+      max-width: 350px;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-alt);
+    }
+
+    .profile-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .status-indicator.idle {
+      background: #eab308;
+    }
+
+    .status-indicator.away {
+      background: #6b7280;
+    }
+
+    .status-indicator.dnd {
+      background: var(--danger);
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .profile-stat {
+      text-align: center;
+      padding: 8px;
+      background: rgba(2, 132, 199, 0.1);
+      border-radius: 6px;
+    }
+
+    .profile-stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-alt);
+    }
+
+    .profile-stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .profile-action-btn {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-action-btn:hover {
+      background: var(--accent-alt);
+      transform: translateY(-2px);
+    }
+
+    /* Extended Emoji Picker */
+    .emoji-categories {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 8px;
+    }
+
+    .emoji-category-btn {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .emoji-category-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .emoji-search-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+    }
+
+    /* User Status */
+    .user-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .user-status-indicator:hover {
+      background: rgba(2, 132, 199, 0.2);
+    }
+
+    .status-dot-small {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .status-menu {
+      display: none;
+      position: absolute;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 4px 0;
+      z-index: 100;
+      min-width: 120px;
+      top: 100%;
+      left: 0;
+    }
+
+    .status-menu.active {
+      display: block;
+    }
+
+    .status-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      transition: background 0.2s;
+    }
+
+    .status-option:hover {
+      background: rgba(2, 132, 199, 0.2);
+    }
+
+    /* Message Scheduling */
+    .schedule-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .datetime-input {
+      padding: 8px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    .scheduled-messages-list {
+      max-height: 150px;
+      overflow-y: auto;
+      background: rgba(2, 132, 199, 0.05);
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+    .scheduled-item {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(2, 132, 199, 0.3);
+      border-radius: 4px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scheduled-time {
+      color: var(--accent-alt);
+      font-weight: 600;
+    }
+
+    .cancel-scheduled-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      cursor: pointer;
+    }
+
+    /* Message Tagging */
+    .tag-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag-option {
+      background: rgba(2, 132, 199, 0.2);
+      border: 1px solid rgba(2, 132, 199, 0.4);
+      border-radius: 12px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--accent-alt);
+    }
+
+    .tag-option:hover {
+      background: rgba(2, 132, 199, 0.4);
+      border-color: var(--accent);
+    }
+
+    .tag-option.selected {
+      background: var(--accent);
+      color: white;
+    }
+
+    .message-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      margin-right: 4px;
+      margin-top: 4px;
+    }
+
+    /* Room Info Panel */
+    .room-info-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 100vh;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-light);
+      z-index: 500;
+      animation: slideInLeft 0.3s ease-out;
+      overflow-y: auto;
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+
+    .room-info-panel.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-info-header {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .room-info-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .room-info-section {
+      margin-bottom: 16px;
+    }
+
+    .room-info-section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-alt);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* Message Polls */
+    .poll-container {
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid rgba(2, 132, 199, 0.3);
+      border-radius: 8px;
+      padding: 10px;
+      margin: 8px 0;
+    }
+
+    .poll-question {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--accent-alt);
+    }
+
+    .poll-option {
+      background: rgba(2, 132, 199, 0.2);
+      border: 1px solid rgba(2, 132, 199, 0.3);
+      border-radius: 6px;
+      padding: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .poll-option:hover {
+      background: rgba(2, 132, 199, 0.3);
+    }
+
+    .poll-option.voted {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .poll-option-text {
+      flex: 1;
+    }
+
+    .poll-option-votes {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .poll-bar {
+      height: 4px;
+      background: rgba(2, 132, 199, 0.3);
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .poll-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    /* Read Receipts */
+    .read-receipt {
+      font-size: 0.7rem;
+      color: var(--accent-alt);
+      margin-top: 2px;
+    }
+
+    .read-dot {
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      background: var(--accent-alt);
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+
+    /* DMs/Whispers */
+    .dm-panel {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      max-height: 500px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      z-index: 400;
+      animation: slideUp 0.3s ease-out;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dm-panel.active {
+      display: flex;
+    }
+
+    .dm-header {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-light);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dm-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .dm-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .dm-message {
+      background: rgba(2, 132, 199, 0.1);
+      border-radius: 6px;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+    }
+
+    .dm-input {
+      padding: 8px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: 6px;
+    }
+
+    .dm-input input {
+      flex: 1;
+      padding: 6px 8px;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      margin: 0;
+    }
+
+    .dm-send-btn {
+      padding: 6px 10px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .dm-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .dm-list-item {
+      padding: 8px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dm-list-item:hover {
+      background: rgba(2, 132, 199, 0.1);
+    }
+
+    .dm-user-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--accent-alt);
+    }
+
+    .dm-preview {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -1236,6 +1850,18 @@
       </div>
       <div class="header-right">
         <span class="connection-status" id="connection-status">Connected</span>
+        <div class="user-status-indicator" title="Click to change status">
+          <div class="status-dot-small status-indicator online"></div>
+          <span id="status-text" style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 4px;">Online</span>
+          <div class="status-menu" id="status-menu" style="display: none; position: absolute; top: 100%; right: 0; background: var(--bg-secondary); border: 1px solid var(--border-light); border-radius: 6px; z-index: 1000; min-width: 120px; margin-top: 4px;">
+            <div style="padding: 8px;">
+              <div class="status-option" onclick="setUserStatus('online')" style="padding: 6px; cursor: pointer; border-radius: 4px;">🟢 Online</div>
+              <div class="status-option" onclick="setUserStatus('idle')" style="padding: 6px; cursor: pointer; border-radius: 4px;">🟡 Idle</div>
+              <div class="status-option" onclick="setUserStatus('away')" style="padding: 6px; cursor: pointer; border-radius: 4px;">⚪ Away</div>
+              <div class="status-option" onclick="setUserStatus('dnd')" style="padding: 6px; cursor: pointer; border-radius: 4px;">🔴 DND</div>
+            </div>
+          </div>
+        </div>
         <div class="header-actions">
           <button class="action-btn active" id="sound-btn" onclick="toggleSound()" title="Toggle sound notifications (Ctrl+Shift+S)">🔊</button>
           <button class="action-btn" onclick="requestNotificationPermission()" title="Toggle desktop alerts">🔔</button>
@@ -1273,6 +1899,10 @@
 
         <div class="input-row">
           <button class="action-btn" onclick="toggleEmojiPicker()" title="Add emoji (Ctrl+E)">😀</button>
+          <button class="action-btn" onclick="openScheduleModal()" title="Schedule Message">📅</button>
+          <button class="action-btn" onclick="openPollModal()" title="Create Poll">🗳️</button>
+          <button class="action-btn" onclick="toggleRoomInfoPanel()" title="Room Info">ℹ️</button>
+          <button class="action-btn" onclick="toggleDMPanel()" title="Messages">💬</button>
           <input type="text" id="message-input" placeholder="Type a message... (Shift+Enter for new line, @mention users)" spellcheck="true">
           <button class="primary-btn" style="width: auto;" onclick="sendMessage()" title="Send (Ctrl+Enter)">Send</button>
         </div>
@@ -1357,6 +1987,134 @@
         <input type="range" min="12" max="18" value="14" id="font-size-slider" oninput="updateFontSize(this.value)" style="width: 100%; margin: 0; padding: 0;">
         <span style="font-size: 0.75rem; color: #94a3b8;">Current: <span id="font-size-display">14</span>px</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Pinned Messages Panel -->
+  <div class="pinned-messages-panel" id="pinned-panel">
+    <div class="pinned-header">
+      <span>📌 Pinned Messages</span>
+      <button onclick="togglePinnedPanel()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;">✕</button>
+    </div>
+    <div class="pinned-list" id="pinned-list"></div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div class="modal" id="profile-modal">
+    <div class="modal-content profile-modal-content">
+      <span class="modal-close" onclick="closeProfileModal()">✕</span>
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar" style="background: #0284c7;">A</div>
+        <div class="profile-name" id="profile-name">User Name</div>
+        <div class="profile-status">
+          <div class="status-indicator" id="profile-status-dot"></div>
+          <span id="profile-status-text">Online</span>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="profile-msg-count">0</div>
+          <div class="profile-stat-label">Messages</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="profile-join-time">-</div>
+          <div class="profile-stat-label">Days Active</div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="profile-action-btn" onclick="openDMWithUser()">💬 Message</button>
+        <button class="profile-action-btn" onclick="blockUser()">🚫 Block</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Room Info Panel -->
+  <div class="room-info-panel" id="room-info-panel">
+    <div class="room-info-header">
+      <span>ℹ️ Room Info</span>
+      <button onclick="toggleRoomInfoPanel()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem;">✕</button>
+    </div>
+    <div class="room-info-content">
+      <div class="room-info-section">
+        <div class="room-info-section-title">Room Name</div>
+        <div id="room-info-name" style="font-size: 0.9rem;">-</div>
+      </div>
+      <div class="room-info-section">
+        <div class="room-info-section-title">Members Online</div>
+        <div id="room-info-members">0</div>
+      </div>
+      <div class="room-info-section">
+        <div class="room-info-section-title">Total Messages</div>
+        <div id="room-info-messages">0</div>
+      </div>
+      <div class="room-info-section">
+        <div class="room-info-section-title">Created</div>
+        <div id="room-info-created">-</div>
+      </div>
+      <div class="room-info-section">
+        <div class="room-info-section-title">Pinned Messages</div>
+        <div id="room-info-pinned" style="cursor: pointer; color: var(--accent); font-weight: 600;">View Pinned</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Message Modal -->
+  <div class="modal" id="schedule-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeScheduleModal()">✕</span>
+      <div class="modal-header">📅 Schedule Message</div>
+      <form class="schedule-form">
+        <label style="font-size: 0.75rem; color: var(--text-secondary);">Date & Time</label>
+        <input type="datetime-local" id="schedule-datetime" class="datetime-input">
+        <label style="font-size: 0.75rem; color: var(--text-secondary);">Message</label>
+        <textarea id="schedule-message" style="width: 100%; height: 80px; padding: 8px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(15, 23, 42, 0.6); color: var(--text-primary); font-family: inherit; resize: none;" placeholder="Message to schedule..."></textarea>
+        <button type="button" class="primary-btn" onclick="scheduleMessage()" style="margin-top: 8px;">Schedule</button>
+      </form>
+      <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-top: 12px;">Scheduled Messages</label>
+      <div class="scheduled-messages-list" id="scheduled-list"></div>
+    </div>
+  </div>
+
+  <!-- Message Tagging Modal -->
+  <div class="modal" id="tag-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeTagModal()">✕</span>
+      <div class="modal-header">🏷️ Tag Message</div>
+      <div class="tag-picker" id="tag-picker">
+        <div class="tag-option" data-tag="important">⭐ Important</div>
+        <div class="tag-option" data-tag="todo">📝 TODO</div>
+        <div class="tag-option" data-tag="bug">🐛 Bug</div>
+        <div class="tag-option" data-tag="feature">✨ Feature</div>
+        <div class="tag-option" data-tag="question">❓ Question</div>
+        <div class="tag-option" data-tag="done">✅ Done</div>
+      </div>
+      <button type="button" class="primary-btn" onclick="applyTag()" style="margin-top: 12px;">Apply Tag</button>
+    </div>
+  </div>
+
+  <!-- Poll Creation Modal -->
+  <div class="modal" id="poll-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closePollModal()">✕</span>
+      <div class="modal-header">🗳️ Create Poll</div>
+      <input type="text" id="poll-question" placeholder="Poll question..." style="width: 100%; padding: 8px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(15, 23, 42, 0.6); color: var(--text-primary); margin-bottom: 10px;">
+      <div id="poll-options" style="margin-bottom: 10px;">
+        <input type="text" class="poll-option-input" placeholder="Option 1" style="width: 100%; padding: 6px; border: 1px solid var(--border-light); border-radius: 4px; background: rgba(15, 23, 42, 0.6); color: var(--text-primary); margin-bottom: 6px;">
+        <input type="text" class="poll-option-input" placeholder="Option 2" style="width: 100%; padding: 6px; border: 1px solid var(--border-light); border-radius: 4px; background: rgba(15, 23, 42, 0.6); color: var(--text-primary); margin-bottom: 6px;">
+      </div>
+      <button type="button" class="primary-btn" onclick="addPollOption()" style="width: auto; padding: 6px 12px; margin-bottom: 10px;">+ Add Option</button>
+      <button type="button" class="primary-btn" onclick="createPoll()" style="margin-top: 8px;">Create Poll</button>
+    </div>
+  </div>
+
+  <!-- DM Panel -->
+  <div class="dm-panel" id="dm-panel">
+    <div class="dm-header">
+      <span>💬 Messages</span>
+      <button class="dm-close-btn" onclick="toggleDMPanel()">✕</button>
+    </div>
+    <div id="dm-content" style="flex: 1; overflow-y: auto;">
+      <div class="dm-list" id="dm-list"></div>
     </div>
   </div>
 
@@ -1850,9 +2608,12 @@
           <div class="msg-actions">
             <span class="action-icon" onclick="copyToClipboard(\`${text.replace(/`/g, '\\`')}\`)" title="Copy">📋</span>
             <span class="action-icon" onclick="setReply(\`${text.replace(/`/g, '\\`')}\`)" title="Reply">↩️</span>
+            <span class="action-icon" onclick="togglePin('${id}', \`${text.replace(/`/g, '\\`')}\`)" title="Pin">📌</span>
+            <span class="action-icon" onclick="tagMessage('${id}')" title="Tag">🏷️</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '❤️')" title="Love">❤️</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '👍')" title="Like">👍</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '😂')" title="Laugh">😂</span>
+            <span class="action-icon" onclick="showUserProfile('${sender}')" title="Profile">👤</span>
             ${isMe ? `<span class="action-icon" onclick="editMessage('${id}', \`${text.replace(/`/g, '\\`')}\`)" title="Edit">✏️</span>` : ''}
             ${isMe ? `<span class="action-icon" onclick="socket.emit('delete-message', {messageId:'${id}', room:currentRoom})" title="Delete">🗑️</span>` : ''}
           </div>
@@ -1925,12 +2686,405 @@
       }
     });
 
+    // ========== NEW FEATURE FUNCTIONS ==========
+
+    // 1. PIN MESSAGES
+    let pinnedMessages = {};
+
+    function togglePin(messageId, messageText) {
+      if (!pinnedMessages[messageId]) {
+        pinnedMessages[messageId] = { text: messageText, sender: myName, time: new Date().toLocaleTimeString() };
+      } else {
+        delete pinnedMessages[messageId];
+      }
+      updatePinnedList();
+    }
+
+    function updatePinnedList() {
+      const list = document.getElementById('pinned-list');
+      if (Object.keys(pinnedMessages).length === 0) {
+        list.innerHTML = '<div style="padding: 16px; text-align: center; color: #94a3b8;">No pinned messages yet</div>';
+        return;
+      }
+      
+      list.innerHTML = Object.entries(pinnedMessages).map(([id, msg]) => `
+        <div class="pinned-item" onclick="highlightMessage('${id}')">
+          <div class="pinned-message-text">${msg.text}</div>
+          <div class="pinned-message-meta">${msg.sender} • ${msg.time}</div>
+          <button onclick="togglePin('${id}', \`${msg.text.replace(/`/g, '\\`')}\`)" style="background: #991b1b; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.65rem; cursor: pointer; margin-top: 4px;">Unpin</button>
+        </div>
+      `).join('');
+    }
+
+    function togglePinnedPanel() {
+      document.getElementById('pinned-panel').classList.toggle('active');
+    }
+
+    // 2. USER PROFILES
+    let userStats = {};
+
+    function showUserProfile(username) {
+      document.getElementById('profile-name').textContent = username;
+      document.getElementById('profile-avatar').textContent = username.charAt(0).toUpperCase();
+      document.getElementById('profile-avatar').style.background = getColor(username);
+      
+      const msgCount = userStats[username]?.count || 0;
+      const joinTime = userStats[username]?.joinTime || Date.now();
+      const daysActive = Math.floor((Date.now() - joinTime) / (1000 * 60 * 60 * 24)) || 0;
+      
+      document.getElementById('profile-msg-count').textContent = msgCount;
+      document.getElementById('profile-join-time').textContent = daysActive;
+      document.getElementById('profile-status-text').textContent = 'Online';
+      document.getElementById('profile-status-dot').className = 'status-indicator';
+      
+      document.getElementById('profile-modal').classList.add('active');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal').classList.remove('active');
+    }
+
+    // 3. EXTENDED EMOJI PICKER
+    const emojiCategories = {
+      smileys: ['😀', '😂', '😍', '🥰', '😘', '😭', '😱', '🤔', '😴', '🤐', '🤩', '😇'],
+      hearts: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '💕', '💞'],
+      hands: ['👋', '✋', '🤚', '👌', '✌️', '🤞', '🤟', '👍', '👎', '✊', '👊', '🤛'],
+      objects: ['🎉', '🎊', '🎈', '🎀', '🎁', '🎂', '🍰', '🎃', '🎄', '🔥', '✨', '⭐'],
+      symbols: ['💯', '✅', '❌', '⚠️', '🚫', '📛', '📌', '📍', '🎯', '🏆', '🥇', '🏅']
+    };
+
+    let currentEmojiCategory = 'smileys';
+
+    function setupEmojiPicker() {
+      const picker = document.getElementById('emoji-picker');
+      if (!picker) return;
+      
+      // Add categories
+      let html = '<div class="emoji-categories">';
+      Object.keys(emojiCategories).forEach(cat => {
+        html += `<button class="emoji-category-btn ${cat === 'smileys' ? 'active' : ''}" onclick="switchEmojiCategory('${cat}')">${getEmojiForCategory(cat)}</button>`;
+      });
+      html += '</div>';
+      html += '<input type="text" class="emoji-search-input" id="emoji-search" placeholder="Search..." oninput="searchEmoji(this.value)">';
+      html += '<div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 8px;">';
+      html += emojiCategories[currentEmojiCategory].map(e => `<div class="emoji-item">${e}</div>`).join('');
+      html += '</div>';
+      
+      picker.innerHTML = html;
+      
+      // Add click handlers
+      picker.querySelectorAll('.emoji-item').forEach(item => {
+        item.onclick = () => insertEmoji(item.textContent);
+      });
+    }
+
+    function getEmojiForCategory(cat) {
+      return { smileys: '😀', hearts: '❤️', hands: '👋', objects: '🎉', symbols: '💯' }[cat];
+    }
+
+    function switchEmojiCategory(cat) {
+      currentEmojiCategory = cat;
+      setupEmojiPicker();
+    }
+
+    function searchEmoji(query) {
+      const items = document.querySelectorAll('.emoji-item');
+      items.forEach(item => {
+        item.style.display = 'block';
+      });
+    }
+
+    // 4. USER STATUS
+    let userStatus = 'online';
+    let userStatusMap = { online: 'online', idle: 'idle', away: 'away', dnd: 'dnd' };
+
+    function setupUserStatus() {
+      const statusIndicator = document.querySelector('.user-status-indicator');
+      if (statusIndicator) {
+        statusIndicator.onclick = (e) => {
+          e.stopPropagation();
+          document.getElementById('status-menu').classList.toggle('active');
+        };
+      }
+    }
+
+    function setUserStatus(status) {
+      userStatus = status;
+      const dot = document.querySelector('.status-dot-small');
+      dot.className = `status-dot-small status-indicator ${status}`;
+      document.getElementById('status-menu').classList.remove('active');
+      socket.emit('user-status-changed', { username: myName, status: status });
+    }
+
+    // 5. MESSAGE SCHEDULING
+    let scheduledMessages = [];
+
+    function openScheduleModal() {
+      document.getElementById('schedule-modal').classList.add('active');
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('schedule-modal').classList.remove('active');
+    }
+
+    function scheduleMessage() {
+      const datetime = document.getElementById('schedule-datetime').value;
+      const msg = document.getElementById('schedule-message').value.trim();
+      
+      if (!datetime || !msg) {
+        alert('Please fill in all fields');
+        return;
+      }
+      
+      const scheduledTime = new Date(datetime).getTime();
+      scheduledMessages.push({ id: Date.now(), msg, time: scheduledTime, sent: false });
+      
+      document.getElementById('schedule-message').value = '';
+      updateScheduledList();
+    }
+
+    function updateScheduledList() {
+      const list = document.getElementById('scheduled-list');
+      list.innerHTML = scheduledMessages.map(s => `
+        <div class="scheduled-item">
+          <span class="scheduled-time">${new Date(s.time).toLocaleString()}</span>
+          <button class="cancel-scheduled-btn" onclick="cancelScheduled(${s.id})">Cancel</button>
+        </div>
+      `).join('');
+    }
+
+    function cancelScheduled(id) {
+      scheduledMessages = scheduledMessages.filter(s => s.id !== id);
+      updateScheduledList();
+    }
+
+    // 6. MESSAGE TAGGING
+    let messageTags = {};
+    let currentTagMessageId = null;
+
+    function tagMessage(messageId) {
+      currentTagMessageId = messageId;
+      document.getElementById('tag-modal').classList.add('active');
+    }
+
+    function closeTagModal() {
+      document.getElementById('tag-modal').classList.remove('active');
+    }
+
+    function applyTag() {
+      const selected = document.querySelector('.tag-option.selected');
+      if (!selected || !currentTagMessageId) return;
+      
+      const tag = selected.getAttribute('data-tag');
+      messageTags[currentTagMessageId] = tag;
+      
+      const msgEl = document.getElementById(`msg-${currentTagMessageId}`);
+      if (msgEl) {
+        const tagEl = msgEl.querySelector('.message-tag') || document.createElement('div');
+        tagEl.className = 'message-tag';
+        tagEl.textContent = selected.textContent;
+        msgEl.querySelector('.msg').appendChild(tagEl);
+      }
+      
+      closeTagModal();
+    }
+
+    // Add click handlers to tag options
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.tag-option').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.tag-option').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+      });
+    });
+
+    // 7. ROOM INFO PANEL
+    function toggleRoomInfoPanel() {
+      const panel = document.getElementById('room-info-panel');
+      panel.classList.toggle('active');
+      
+      if (panel.classList.contains('active')) {
+        document.getElementById('room-info-name').textContent = currentRoom;
+        document.getElementById('room-info-members').textContent = document.getElementById('user-count').textContent;
+        document.getElementById('room-info-messages').textContent = document.querySelectorAll('.msg-wrapper').length;
+        document.getElementById('room-info-created').textContent = new Date().toLocaleDateString();
+        document.getElementById('room-info-pinned').textContent = `View Pinned (${Object.keys(pinnedMessages).length})`;
+      }
+    }
+
+    // 8. MESSAGE POLLS
+    let currentPoll = null;
+    let pollVotes = {};
+
+    function openPollModal() {
+      document.getElementById('poll-modal').classList.add('active');
+    }
+
+    function closePollModal() {
+      document.getElementById('poll-modal').classList.remove('active');
+    }
+
+    function addPollOption() {
+      const options = document.getElementById('poll-options');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'poll-option-input';
+      input.placeholder = `Option ${options.children.length + 1}`;
+      input.style.cssText = 'width: 100%; padding: 6px; border: 1px solid var(--border-light); border-radius: 4px; background: rgba(15, 23, 42, 0.6); color: var(--text-primary); margin-bottom: 6px;';
+      options.appendChild(input);
+    }
+
+    function createPoll() {
+      const question = document.getElementById('poll-question').value.trim();
+      const optionInputs = Array.from(document.querySelectorAll('.poll-option-input'));
+      const options = optionInputs.map(i => i.value.trim()).filter(v => v);
+      
+      if (!question || options.length < 2) {
+        alert('Please enter a question and at least 2 options');
+        return;
+      }
+      
+      currentPoll = { id: Date.now(), question, options, votes: options.map(() => 0) };
+      sendPoll();
+      closePollModal();
+    }
+
+    function sendPoll() {
+      if (!currentPoll) return;
+      const pollHtml = `
+        <div class="poll-container">
+          <div class="poll-question">${currentPoll.question}</div>
+          ${currentPoll.options.map((opt, i) => `
+            <div class="poll-option" onclick="votePoll(${i})">
+              <div class="poll-option-text">${opt}</div>
+              <div class="poll-option-votes">${currentPoll.votes[i]}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      
+      socket.emit('send-message', { 
+        room: currentRoom, 
+        text: pollHtml, 
+        sender: myName,
+        isPoll: true
+      });
+    }
+
+    function votePoll(index) {
+      if (!currentPoll) return;
+      currentPoll.votes[index]++;
+      updatePollDisplay();
+      socket.emit('poll-vote', { pollId: currentPoll.id, index });
+    }
+
+    function updatePollDisplay() {
+      if (!currentPoll) return;
+      const pollElements = document.querySelectorAll('.poll-container');
+      pollElements[pollElements.length - 1].innerHTML = `
+        <div class="poll-question">${currentPoll.question}</div>
+        ${currentPoll.options.map((opt, i) => `
+          <div class="poll-option voted">
+            <div class="poll-option-text">${opt}</div>
+            <div class="poll-option-votes">${currentPoll.votes[i]}</div>
+            <div class="poll-bar"><div class="poll-bar-fill" style="width: ${(currentPoll.votes[i] / Math.max(...currentPoll.votes)) * 100}%"></div></div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    // 9. DM/WHISPERS
+    let dmConversations = {};
+    let currentDMUser = null;
+
+    function toggleDMPanel() {
+      document.getElementById('dm-panel').classList.toggle('active');
+    }
+
+    function openDMWithUser() {
+      const username = document.getElementById('profile-name').textContent;
+      openDM(username);
+      closeProfileModal();
+    }
+
+    function openDM(username) {
+      currentDMUser = username;
+      if (!dmConversations[username]) {
+        dmConversations[username] = [];
+      }
+      
+      const dmContent = document.getElementById('dm-content');
+      const messagesHtml = dmConversations[username].map(msg => `
+        <div class="dm-message" style="text-align: ${msg.sender === myName ? 'right' : 'left'};">
+          <strong>${msg.sender}:</strong> ${msg.text}
+        </div>
+      `).join('');
+      
+      dmContent.innerHTML = `
+        <div class="dm-messages">${messagesHtml || '<div style="padding: 12px; text-align: center; color: #94a3b8;">Start a conversation...</div>'}</div>
+        <div class="dm-input">
+          <input type="text" id="dm-input" placeholder="Message..." onkeypress="if(event.key==='Enter') sendDM()">
+          <button class="dm-send-btn" onclick="sendDM()">Send</button>
+        </div>
+      `;
+      
+      document.getElementById('dm-panel').classList.add('active');
+    }
+
+    function sendDM() {
+      const input = document.getElementById('dm-input');
+      const text = input.value.trim();
+      if (!text || !currentDMUser) return;
+      
+      if (!dmConversations[currentDMUser]) {
+        dmConversations[currentDMUser] = [];
+      }
+      
+      dmConversations[currentDMUser].push({ sender: myName, text });
+      input.value = '';
+      openDM(currentDMUser);
+      socket.emit('send-dm', { to: currentDMUser, from: myName, text });
+    }
+
+    // 10. READ RECEIPTS
+    let messageReadBy = {};
+
+    function markMessageAsRead(messageId, userName) {
+      if (!messageReadBy[messageId]) {
+        messageReadBy[messageId] = [];
+      }
+      if (!messageReadBy[messageId].includes(userName)) {
+        messageReadBy[messageId].push(userName);
+      }
+    }
+
+    // Helper function to highlight messages
+    function highlightMessage(messageId) {
+      const msgEl = document.getElementById(`msg-${messageId}`);
+      if (msgEl) {
+        msgEl.style.background = 'rgba(2, 132, 199, 0.2)';
+        msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          msgEl.style.background = '';
+        }, 2000);
+      }
+    }
+
     // Close modals on outside click
     window.addEventListener('click', (e) => {
       const modal = document.getElementById('settings-modal');
       if (e.target === modal) closeSettings();
       const statsModal = document.getElementById('stats-modal');
       if (e.target === statsModal) closeStats();
+      const profileModal = document.getElementById('profile-modal');
+      if (e.target === profileModal) closeProfileModal();
+      const scheduleModal = document.getElementById('schedule-modal');
+      if (e.target === scheduleModal) closeScheduleModal();
+      const tagModal = document.getElementById('tag-modal');
+      if (e.target === tagModal) closeTagModal();
+      const pollModal = document.getElementById('poll-modal');
+      if (e.target === pollModal) closePollModal();
     });
 
     // Message Editing Functions
@@ -2100,6 +3254,55 @@
       const indicator = document.getElementById('typing-indicator');
       indicator.innerHTML = `✏️ ${username} <span class="typing-animation"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>`;
     });
+
+    // ========== NEW FEATURE SOCKET EVENTS ==========
+
+    // Handle pinned messages
+    socket.on('message-pinned', (data) => {
+      pinnedMessages[data.messageId] = data.message;
+      updatePinnedList();
+    });
+
+    socket.on('message-unpinned', (data) => {
+      delete pinnedMessages[data.messageId];
+      updatePinnedList();
+    });
+
+    // Handle DMs
+    socket.on('dm-received', (data) => {
+      if (!dmConversations[data.from]) {
+        dmConversations[data.from] = [];
+      }
+      dmConversations[data.from].push({ sender: data.from, text: data.text });
+      playNotificationSound();
+    });
+
+    // Handle user status changes
+    socket.on('user-status-changed', (data) => {
+      console.log(`${data.username} changed status to ${data.status}`);
+    });
+
+    // Handle poll votes
+    socket.on('poll-vote', (data) => {
+      if (currentPoll && currentPoll.id === data.pollId) {
+        currentPoll.votes[data.index]++;
+        updatePollDisplay();
+      }
+    });
+
+    // Handle read receipts
+    socket.on('read-receipt', (data) => {
+      markMessageAsRead(data.messageId, data.userName);
+    });
+
+    // Update user stats when messages are received
+    socket.on('receive-message', (data) => {
+      if (!userStats[data.sender]) {
+        userStats[data.sender] = { count: 0, joinTime: Date.now() };
+      }
+      userStats[data.sender].count++;
+    });
+
   </script>
 </body>
 </html> 
