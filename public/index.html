@@ -644,16 +644,589 @@
       color: var(--accent);
       font-style: italic;
     }
+
+    .typing-animation {
+      display: inline-flex;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .typing-dot {
+      width: 4px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    .mention-suggestions {
+      display: none;
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 4px 0;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 100;
+      width: 200px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .mention-suggestions.active {
+      display: block;
+    }
+
+    .mention-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .mention-item:hover {
+      background: var(--accent);
+      border-left-color: var(--accent-alt);
+    }
+
+    .format-toolbar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .format-btn {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .format-btn:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .format-btn.active {
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(2, 132, 199, 0.5);
+    }
+
+    .msg-edit-mode {
+      border: 2px solid var(--accent);
+      background: rgba(2, 132, 199, 0.1) !important;
+    }
+
+    .msg-edited-indicator {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      margin-left: 4px;
+      font-style: italic;
+    }
+
+    .volume-control {
+      width: 100px;
+      height: 4px;
+      background: var(--bg-tertiary);
+      border-radius: 2px;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .copy-feedback {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      animation: slideUp 0.3s ease-out;
+      z-index: 2000;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      background: rgba(2, 132, 199, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent-alt);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .msg-consecutive {
+      margin-bottom: 4px;
+    }
+
+    .msg-first-of-group {
+      margin-bottom: 12px;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 4px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    .mention-highlight {
+      background: rgba(2, 132, 199, 0.3);
+      padding: 0 4px;
+      border-radius: 3px;
+      font-weight: 600;
+      color: var(--accent-alt);
+    }
+
+    .message-pin-indicator {
+      font-size: 0.7rem;
+      color: var(--accent-alt);
+      margin-top: 4px;
+    }
+
+    .edited-badge {
+      background: rgba(2, 132, 199, 0.2);
+      color: var(--accent-alt);
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    /* Setup Screen Enhancements */
+    #setup {
+      background: rgba(30, 41, 59, 0.9) !important;
+      border: 2px solid rgba(2, 132, 199, 0.3) !important;
+      box-shadow: 0 20px 60px rgba(2, 132, 199, 0.2), inset 0 0 60px rgba(2, 132, 199, 0.05);
+      animation: setupSlideIn 0.5s ease-out;
+    }
+
+    @keyframes setupSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .setup-header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .setup-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .setup-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+
+    .setup-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      font-size: 1rem;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    input.with-icon {
+      padding-left: 38px !important;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px 6px;
+      transition: color 0.2s;
+    }
+
+    .password-toggle:hover {
+      color: var(--accent-alt);
+    }
+
+    input.form-input {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 0;
+      border-radius: 12px;
+      border: 1.5px solid rgba(2, 132, 199, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input.form-input:focus {
+      border-color: var(--accent);
+      background: rgba(15, 23, 42, 0.95);
+      box-shadow: 0 0 16px rgba(2, 132, 199, 0.4), inset 0 0 8px rgba(2, 132, 199, 0.1);
+    }
+
+    input.form-input::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+    }
+
+    input.form-input.error {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    input.form-input.success {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.05);
+    }
+
+    .form-error {
+      font-size: 0.75rem;
+      color: #fca5a5;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .form-error.show {
+      display: block;
+      animation: slideDown 0.2s ease-out;
+    }
+
+    .join-button {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      position: relative;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .join-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(2, 132, 199, 0.4);
+    }
+
+    .join-button:active {
+      transform: translateY(0);
+    }
+
+    .join-button.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .join-button.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .setup-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(2, 132, 199, 0.2);
+    }
+
+    .info-card {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px solid rgba(2, 132, 199, 0.2);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+
+    .info-card:hover {
+      background: rgba(2, 132, 199, 0.15);
+      border-color: rgba(2, 132, 199, 0.4);
+    }
+
+    .info-icon {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .sample-rooms {
+      margin-top: 16px;
+    }
+
+    .sample-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .room-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .room-chip {
+      background: rgba(2, 132, 199, 0.2);
+      border: 1px solid rgba(2, 132, 199, 0.4);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      color: var(--accent-alt);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .room-chip:hover {
+      background: rgba(2, 132, 199, 0.4);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .setup-footer {
+      font-size: 0.7rem;
+      color: #64748b;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .light-theme #setup {
+      background: rgba(248, 250, 252, 0.95) !important;
+      border-color: rgba(2, 132, 199, 0.2) !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), inset 0 0 60px rgba(2, 132, 199, 0.03);
+    }
+
+    .light-theme input.form-input {
+      background: rgba(248, 250, 252, 0.8);
+      border-color: rgba(2, 132, 199, 0.3);
+    }
+
+    .light-theme input.form-input:focus {
+      background: rgba(248, 250, 252, 0.95);
+    }
+
+    .light-theme .setup-title {
+      -webkit-text-fill-color: unset;
+      background: unset;
+      background-clip: unset;
+      color: #0284c7;
+    }
+
+    .light-theme .info-card {
+      background: rgba(2, 132, 199, 0.06);
+      border-color: rgba(2, 132, 199, 0.2);
+    }
+
+    .light-theme .room-chip {
+      background: rgba(2, 132, 199, 0.15);
+      border-color: rgba(2, 132, 199, 0.3);
+      color: #0284c7;
+    }
   </style>
 </head>
 <body>
 
-  <div class="card" id="setup" style="max-width: 400px;">
-    <h2 style="text-align: center; margin-bottom: 16px; color: #38bdf8;">Join Private Chat</h2>
-    <input type="text" id="username" placeholder="Your Name" autocomplete="off">
-    <input type="text" id="room" placeholder="Room Name" autocomplete="off">
-    <input type="password" id="room-pass" placeholder="Room Passcode (Optional)">
-    <button class="primary-btn" onclick="joinRoom()">Join Room</button>
+  <div class="card" id="setup" style="max-width: 480px;">
+    <div class="setup-header">
+      <div class="setup-icon">💬</div>
+      <h2 class="setup-title">Private Chat Studio</h2>
+      <p class="setup-subtitle">Secure, Real-time Chat Rooms</p>
+    </div>
+
+    <form onsubmit="event.preventDefault(); joinRoom();">
+      <div class="form-group">
+        <label class="form-label">👤 Your Name</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input type="text" id="username" class="form-input with-icon" placeholder="Enter your name" autocomplete="off" required>
+        </div>
+        <div class="form-error" id="username-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">🏠 Room Name</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🏠</span>
+          <input type="text" id="room" class="form-input with-icon" placeholder="Enter room name (e.g., team-chat)" autocomplete="off" required>
+        </div>
+        <div class="form-error" id="room-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">🔐 Passcode (Optional)</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔐</span>
+          <input type="password" id="room-pass" class="form-input with-icon" placeholder="Leave blank for public room">
+          <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">👁️</button>
+        </div>
+      </div>
+
+      <button type="submit" class="join-button" id="join-btn" onclick="joinRoom()">Join Room</button>
+    </form>
+
+    <div class="sample-rooms">
+      <label class="sample-label">💡 Try Sample Rooms</label>
+      <div class="room-chips">
+        <span class="room-chip" onclick="setSampleRoom('general')">General</span>
+        <span class="room-chip" onclick="setSampleRoom('development')">Development</span>
+        <span class="room-chip" onclick="setSampleRoom('random')">Random</span>
+        <span class="room-chip" onclick="setSampleRoom('gaming')">Gaming</span>
+      </div>
+    </div>
+
+    <div class="setup-info">
+      <div class="info-card">
+        <div class="info-icon">⚡</div>
+        <div>Instant Connection</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🔒</div>
+        <div>End-to-End Secure</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📱</div>
+        <div>Works Everywhere</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">⚙️</div>
+        <div>Fully Customizable</div>
+      </div>
+    </div>
+
+    <div class="setup-footer">
+      ✨ Private Chat Studio v2.0 | Press Enter or click Join to continue
+    </div>
   </div>
 
   <div class="card" id="chat" style="display:none;">
@@ -691,12 +1264,50 @@
           <span style="cursor:pointer;" onclick="cancelReply()">✕</span>
         </div>
 
+        <div class="format-toolbar" id="format-toolbar">
+          <button class="format-btn" title="Bold (Ctrl+B)" onclick="insertFormat('**')">B</button>
+          <button class="format-btn" title="Italic (Ctrl+I)" onclick="insertFormat('_')">I</button>
+          <button class="format-btn" title="Code (Ctrl+`)">Code</button>
+          <button class="format-btn" title="Statistics (Ctrl+Shift+P)" onclick="showStats()">📊 Stats</button>
+        </div>
+
         <div class="input-row">
           <button class="action-btn" onclick="toggleEmojiPicker()" title="Add emoji (Ctrl+E)">😀</button>
-          <input type="text" id="message-input" placeholder="Type a message... (Shift+Enter for new line)" spellcheck="true">
+          <input type="text" id="message-input" placeholder="Type a message... (Shift+Enter for new line, @mention users)" spellcheck="true">
           <button class="primary-btn" style="width: auto;" onclick="sendMessage()" title="Send (Ctrl+Enter)">Send</button>
         </div>
         <div class="emoji-picker" id="emoji-picker"></div>
+        <div class="mention-suggestions" id="mention-suggestions"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Statistics Modal -->
+  <div class="modal" id="stats-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeStats()">✕</span>
+      <div class="modal-header">Chat Statistics</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-messages">0</div>
+          <div class="stat-label">Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-users">0</div>
+          <div class="stat-label">Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-your-msgs">0</div>
+          <div class="stat-label">Your Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-avg-length">0</div>
+          <div class="stat-label">Avg Length</div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-size: 0.75rem; color: var(--text-secondary);">
+        <div><strong>Most Active User:</strong> <span id="stat-top-user">-</span></div>
+        <div style="margin-top: 4px;"><strong>Room Uptime:</strong> <span id="stat-uptime">-</span></div>
       </div>
     </div>
   </div>
@@ -719,6 +1330,10 @@
           <span>Sound Notifications</span>
           <div class="toggle-switch active" id="sound-toggle" onclick="toggleSound()"></div>
         </label>
+        <div style="margin-top: 6px;">
+          <label style="font-size: 0.7rem; color: #94a3b8;">Volume: <span id="volume-display">70</span>%</label>
+          <input type="range" min="0" max="100" value="70" id="volume-slider" oninput="updateVolume(this.value)" style="width: 100%; margin: 4px 0 0 0; padding: 0;">
+        </div>
       </div>
 
       <div class="setting-group">
@@ -776,6 +1391,9 @@
         if (e.key === ',') { e.preventDefault(); openSettings(); }
         if (e.key === 'e') { e.preventDefault(); toggleEmojiPicker(); }
         if (e.shiftKey && e.key === 'S') { e.preventDefault(); toggleSound(); }
+        if (e.shiftKey && e.key === 'P') { e.preventDefault(); showStats(); }
+        if (e.key === 'b') { e.preventDefault(); insertFormat('**'); }
+        if (e.key === 'i') { e.preventDefault(); insertFormat('_'); }
       }
     });
 
@@ -785,7 +1403,14 @@
       soundEnabled: localStorage.getItem('soundEnabled') !== 'false',
       notificationsAllowed: localStorage.getItem('notificationsAllowed') === 'true',
       autoScroll: localStorage.getItem('autoScroll') !== 'false',
-      fontSize: parseInt(localStorage.getItem('fontSize') || '14')
+      fontSize: parseInt(localStorage.getItem('fontSize') || '14'),
+      volume: parseInt(localStorage.getItem('volume') || '70')
+    };
+
+    let chatStats = {
+      messages: [],
+      startTime: Date.now(),
+      userMessageCount: {}
     };
 
     function saveSettings() {
@@ -794,6 +1419,13 @@
       localStorage.setItem('notificationsAllowed', appSettings.notificationsAllowed);
       localStorage.setItem('autoScroll', appSettings.autoScroll);
       localStorage.setItem('fontSize', appSettings.fontSize);
+      localStorage.setItem('volume', appSettings.volume);
+    }
+
+    function updateVolume(value) {
+      appSettings.volume = parseInt(value);
+      document.getElementById('volume-display').textContent = value;
+      saveSettings();
     }
 
     function toggleTheme() {
@@ -843,6 +1475,8 @@
       document.getElementById('autoscroll-toggle').classList.toggle('active', appSettings.autoScroll);
       document.getElementById('font-size-slider').value = appSettings.fontSize;
       document.getElementById('font-size-display').textContent = appSettings.fontSize;
+      document.getElementById('volume-slider').value = appSettings.volume;
+      document.getElementById('volume-display').textContent = appSettings.volume;
       document.getElementById('chat-box').style.fontSize = appSettings.fontSize + 'px';
     }
 
@@ -855,7 +1489,8 @@
         osc.type = 'sine';
         osc.frequency.setValueAtTime(587.33, ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        const volume = appSettings.volume / 100 * 0.1;
+        gain.gain.setValueAtTime(volume, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
         osc.connect(gain);
         gain.connect(ctx.destination);
@@ -921,20 +1556,110 @@
     }
 
     function joinRoom() {
-      myName = document.getElementById('username').value.trim();
-      currentRoom = document.getElementById('room').value.trim();
+      const usernameEl = document.getElementById('username');
+      const roomEl = document.getElementById('room');
+      
+      myName = usernameEl.value.trim();
+      currentRoom = roomEl.value.trim();
       const pass = document.getElementById('room-pass').value.trim();
-      if (myName && currentRoom) {
-        socket.emit('join-room', { room: currentRoom, password: pass, username: myName });
-        loadDraft();
+      
+      // Validation
+      let hasError = false;
+      
+      if (!myName) {
+        showError('username', '👤 Please enter your name');
+        hasError = true;
+      } else if (myName.length < 2) {
+        showError('username', '👤 Name must be at least 2 characters');
+        hasError = true;
+      } else if (myName.length > 20) {
+        showError('username', '👤 Name must be 20 characters or less');
+        hasError = true;
+      } else {
+        clearError('username');
+      }
+      
+      if (!currentRoom) {
+        showError('room', '🏠 Please enter a room name');
+        hasError = true;
+      } else if (currentRoom.length < 2) {
+        showError('room', '🏠 Room name must be at least 2 characters');
+        hasError = true;
+      } else if (currentRoom.length > 30) {
+        showError('room', '🏠 Room name must be 30 characters or less');
+        hasError = true;
+      } else {
+        clearError('room');
+      }
+      
+      if (hasError) return;
+      
+      // Show loading state
+      const joinBtn = document.getElementById('join-btn');
+      joinBtn.classList.add('loading');
+      joinBtn.disabled = true;
+      
+      socket.emit('join-room', { room: currentRoom, password: pass, username: myName });
+      loadDraft();
+    }
+
+    function showError(fieldId, message) {
+      const errorEl = document.getElementById(fieldId + '-error');
+      const inputEl = document.getElementById(fieldId);
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.add('show');
+        inputEl.classList.add('error');
       }
     }
 
+    function clearError(fieldId) {
+      const errorEl = document.getElementById(fieldId + '-error');
+      const inputEl = document.getElementById(fieldId);
+      if (errorEl) {
+        errorEl.classList.remove('show');
+        inputEl.classList.remove('error');
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const passEl = document.getElementById('room-pass');
+      const toggle = event.target;
+      if (passEl.type === 'password') {
+        passEl.type = 'text';
+        toggle.textContent = '🙈';
+      } else {
+        passEl.type = 'password';
+        toggle.textContent = '👁️';
+      }
+    }
+
+    function setSampleRoom(roomName) {
+      document.getElementById('room').value = roomName;
+      document.getElementById('room').focus();
+      clearError('room');
+    }
+
     socket.on('join-error', (msg) => {
-      alert('❌ ' + msg);
+      const joinBtn = document.getElementById('join-btn');
+      joinBtn.classList.remove('loading');
+      joinBtn.disabled = false;
+      
+      // Show error in form
+      if (msg.includes('password') || msg.includes('passcode')) {
+        showError('room-pass', '🔐 ' + msg);
+      } else if (msg.includes('username') || msg.includes('name')) {
+        showError('username', '👤 ' + msg);
+      } else {
+        showError('room', '🏠 ' + msg);
+      }
     });
 
     socket.on('load-history', (messages) => {
+      const joinBtn = document.getElementById('join-btn');
+      joinBtn.classList.remove('loading');
+      joinBtn.disabled = false;
+      
       document.getElementById('setup').style.display = 'none';
       document.getElementById('chat').style.display = 'flex';
       document.getElementById('room-title').textContent = currentRoom;
@@ -952,15 +1677,6 @@
         e.preventDefault();
         sendMessage();
       }
-    });
-
-    msgInput.addEventListener('input', () => {
-      saveDraft();
-      socket.emit('typing', { room: currentRoom, username: myName });
-      clearTimeout(typingTimeout);
-      typingTimeout = setTimeout(() => {
-        socket.emit('stop-typing', { room: currentRoom });
-      }, 2000);
     });
 
     socket.on('user-typing', (username) => {
@@ -1049,19 +1765,6 @@
       return current !== previous;
     }
 
-    socket.on('receive-message', (data) => {
-      const isFromSomeoneElse = data.sender !== myName;
-      appendMessage(data, isFromSomeoneElse);
-
-      if (isFromSomeoneElse) {
-        unreadCount++;
-        playNotificationSound();
-        if (notificationsAllowed && document.hidden) {
-          new Notification(`📨 ${data.sender}`, { body: data.text, icon: '💬' });
-        }
-      }
-    });
-
     socket.on('reaction-updated', ({ messageId, reactions }) => {
       const msgEl = document.getElementById(`msg-${messageId}`);
       if (!msgEl) return;
@@ -1129,14 +1832,15 @@
       wrapper.id = `msg-${id}`;
 
       const relativeTime = getRelativeTime(time);
+      const parsedText = parseMarkdown(escapeHtml(text));
       
       wrapper.innerHTML = `
         <div class="avatar" style="background:${getColor(sender)}" title="${sender}">${sender.charAt(0).toUpperCase()}</div>
         <div class="msg-container">
           <div class="msg ${isMe ? 'me' : 'them'}">
-            ${replyTo ? `<div class="reply-quote">↩️ ${escapeHtml(replyTo)}</div>` : ''}
+            ${replyTo ? `<div class="reply-quote">↩️ ${parseMarkdown(escapeHtml(replyTo))}</div>` : ''}
             <div style="font-size:0.7rem; font-weight:600; opacity:0.8; margin-bottom: 2px;">${escapeHtml(sender)}</div>
-            <div class="msg-body">${escapeHtml(text)}</div>
+            <div class="msg-body">${parsedText}</div>
             <div class="reactions-bar"></div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
               <div style="font-size:0.65rem; opacity:0.6;" title="${new Date(time).toLocaleString()}">${formatMessageTime(time)}</div>
@@ -1144,10 +1848,12 @@
             </div>
           </div>
           <div class="msg-actions">
+            <span class="action-icon" onclick="copyToClipboard(\`${text.replace(/`/g, '\\`')}\`)" title="Copy">📋</span>
             <span class="action-icon" onclick="setReply(\`${text.replace(/`/g, '\\`')}\`)" title="Reply">↩️</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '❤️')" title="Love">❤️</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '👍')" title="Like">👍</span>
             <span class="action-icon" onclick="toggleReaction('${id}', '😂')" title="Laugh">😂</span>
+            ${isMe ? `<span class="action-icon" onclick="editMessage('${id}', \`${text.replace(/`/g, '\\`')}\`)" title="Edit">✏️</span>` : ''}
             ${isMe ? `<span class="action-icon" onclick="socket.emit('delete-message', {messageId:'${id}', room:currentRoom})" title="Delete">🗑️</span>` : ''}
           </div>
         </div>
@@ -1191,10 +1897,208 @@
       }
     }
 
+    // Setup screen form input validation
+    document.addEventListener('DOMContentLoaded', () => {
+      const usernameEl = document.getElementById('username');
+      const roomEl = document.getElementById('room');
+      
+      if (usernameEl) {
+        usernameEl.addEventListener('input', () => {
+          if (usernameEl.value.trim().length >= 2) {
+            clearError('username');
+            usernameEl.classList.add('success');
+          } else if (usernameEl.value.trim().length > 0) {
+            clearError('username');
+          }
+        });
+      }
+      
+      if (roomEl) {
+        roomEl.addEventListener('input', () => {
+          if (roomEl.value.trim().length >= 2) {
+            clearError('room');
+            roomEl.classList.add('success');
+          } else if (roomEl.value.trim().length > 0) {
+            clearError('room');
+          }
+        });
+      }
+    });
+
     // Close modals on outside click
     window.addEventListener('click', (e) => {
       const modal = document.getElementById('settings-modal');
       if (e.target === modal) closeSettings();
+      const statsModal = document.getElementById('stats-modal');
+      if (e.target === statsModal) closeStats();
+    });
+
+    // Message Editing Functions
+    function editMessage(messageId, currentText) {
+      editingMessageId = messageId;
+      const input = document.getElementById('message-input');
+      input.value = currentText;
+      input.focus();
+      input.select();
+      const msgEl = document.getElementById(`msg-${messageId}`);
+      if (msgEl) msgEl.classList.add('msg-edit-mode');
+    }
+
+    function cancelEdit() {
+      if (editingMessageId) {
+        const msgEl = document.getElementById(`msg-${editingMessageId}`);
+        if (msgEl) msgEl.classList.remove('msg-edit-mode');
+      }
+      editingMessageId = null;
+    }
+
+    // Rich Text Formatting
+    function insertFormat(format) {
+      const input = document.getElementById('message-input');
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const text = input.value;
+      const selected = text.substring(start, end);
+      
+      if (selected) {
+        const formatted = format + selected + format;
+        input.value = text.substring(0, start) + formatted + text.substring(end);
+        input.selectionStart = start + format.length;
+        input.selectionEnd = start + format.length + selected.length;
+      }
+      input.focus();
+    }
+
+    function parseMarkdown(text) {
+      // Bold: **text** → <strong>text</strong>
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      // Italic: _text_ → <em>text</em>
+      text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
+      // Code: \`text\` → <code>text</code>
+      text = text.replace(/\`([^`]+)\`/g, '<code>$1</code>');
+      // @mention → <span class="mention-highlight">@mention</span>
+      text = text.replace(/@(\w+)/g, '<span class="mention-highlight">@$1</span>');
+      return text;
+    }
+
+    // Mention System
+    function updateMentionSuggestions(input) {
+      const value = input.value;
+      const lastAtSign = value.lastIndexOf('@');
+      
+      if (lastAtSign === -1 || lastAtSign === value.length - 1) {
+        document.getElementById('mention-suggestions').classList.remove('active');
+        return;
+      }
+      
+      const query = value.substring(lastAtSign + 1).toLowerCase();
+      const users = Array.from(document.querySelectorAll('.user-list li')).map(li => 
+        li.textContent.trim().replace('●', '').trim()
+      );
+      
+      const matches = users.filter(user => user.toLowerCase().includes(query));
+      const suggestions = document.getElementById('mention-suggestions');
+      
+      if (matches.length > 0 && query.length > 0) {
+        suggestions.innerHTML = matches.map(user => 
+          `<div class="mention-item" onclick="insertMention('${user}')">${user}</div>`
+        ).join('');
+        suggestions.classList.add('active');
+      } else {
+        suggestions.classList.remove('active');
+      }
+    }
+
+    function insertMention(username) {
+      const input = document.getElementById('message-input');
+      const value = input.value;
+      const lastAtSign = value.lastIndexOf('@');
+      input.value = value.substring(0, lastAtSign) + '@' + username + ' ';
+      input.focus();
+      document.getElementById('mention-suggestions').classList.remove('active');
+    }
+
+    // Chat Statistics
+    function showStats() {
+      const box = document.getElementById('chat-box');
+      const msgs = Array.from(box.querySelectorAll('.msg-body')).map(el => el.textContent);
+      const userCounts = {};
+      
+      Array.from(box.querySelectorAll('.msg-wrapper')).forEach(wrapper => {
+        const senderEl = wrapper.querySelector('[style*="font-weight:600"]');
+        if (senderEl) {
+          const sender = senderEl.textContent;
+          userCounts[sender] = (userCounts[sender] || 0) + 1;
+        }
+      });
+
+      const totalMsgs = msgs.length;
+      const yourMsgs = userCounts[myName] || 0;
+      const avgLength = totalMsgs > 0 ? Math.round(msgs.reduce((a, b) => a + b.length, 0) / totalMsgs) : 0;
+      const topUser = Object.entries(userCounts).sort((a, b) => b[1] - a[1])[0];
+      const uptime = new Date(Date.now() - chatStats.startTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      document.getElementById('stat-messages').textContent = totalMsgs;
+      document.getElementById('stat-users').textContent = Object.keys(userCounts).length;
+      document.getElementById('stat-your-msgs').textContent = yourMsgs;
+      document.getElementById('stat-avg-length').textContent = avgLength;
+      document.getElementById('stat-top-user').textContent = topUser ? `${topUser[0]} (${topUser[1]})` : '-';
+      document.getElementById('stat-uptime').textContent = uptime;
+
+      document.getElementById('stats-modal').classList.add('active');
+    }
+
+    function closeStats() {
+      document.getElementById('stats-modal').classList.remove('active');
+    }
+
+    // Copy to Clipboard
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const feedback = document.createElement('div');
+        feedback.className = 'copy-feedback';
+        feedback.textContent = '✓ Copied to clipboard';
+        document.body.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 2000);
+      });
+    }
+
+    // Message grouping - check if consecutive messages from same user
+    let lastSenderInGroup = null;
+
+    // Update receive message handler
+    socket.on('receive-message', (data) => {
+      const isFromSomeoneElse = data.sender !== myName;
+      appendMessage(data, isFromSomeoneElse);
+      
+      if (data.sender) {
+        chatStats.userMessageCount[data.sender] = (chatStats.userMessageCount[data.sender] || 0) + 1;
+      }
+
+      if (isFromSomeoneElse) {
+        unreadCount++;
+        playNotificationSound();
+        if (appSettings.notificationsAllowed && document.hidden) {
+          new Notification(`📨 ${data.sender}`, { body: data.text, icon: '💬' });
+        }
+      }
+    });
+
+    // Update message input to show mentions
+    msgInput.addEventListener('input', () => {
+      saveDraft();
+      updateMentionSuggestions(msgInput);
+      socket.emit('typing', { room: currentRoom, username: myName });
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        socket.emit('stop-typing', { room: currentRoom });
+      }, 2000);
+    });
+
+    // Update typing indicator with animation
+    socket.on('user-typing', (username) => {
+      const indicator = document.getElementById('typing-indicator');
+      indicator.innerHTML = `✏️ ${username} <span class="typing-animation"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>`;
     });
   </script>
 </body>
