@@ -240,6 +240,7 @@
     const socket = io();
     let currentRoom = '', myName = '', replyTarget = null;
     let soundEnabled = true, notificationsAllowed = false;
+    let typingTimeout;
 
     function playNotificationSound() {
       if (!soundEnabled) return;
@@ -305,9 +306,37 @@
           replyTo: replyTarget ? replyTarget.text : null 
         });
         input.value = '';
+        socket.emit('stop-typing', { room: currentRoom });
         cancelReply();
       }
     }
+
+    // --- ENTER KEY AND TYPING EVENT LISTENERS ---
+    const msgInput = document.getElementById('message-input');
+    
+    msgInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    msgInput.addEventListener('input', () => {
+      socket.emit('typing', { room: currentRoom, username: myName });
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        socket.emit('stop-typing', { room: currentRoom });
+      }, 2000);
+    });
+
+    socket.on('user-typing', (username) => {
+      document.getElementById('typing-indicator').textContent = `${username} is typing...`;
+    });
+
+    socket.on('user-stopped-typing', () => {
+      document.getElementById('typing-indicator').textContent = '';
+    });
+    // ------------------------------------------
 
     function setReply(text) {
       replyTarget = { text };
@@ -370,6 +399,15 @@
       const ul = document.getElementById('user-list');
       document.getElementById('user-count').textContent = users.length;
       ul.innerHTML = users.map(u => `<li><span class="status-dot"></span>${u}</li>`).join('');
+    });
+
+    socket.on('system-message', (text) => {
+      const box = document.getElementById('chat-box');
+      const sysEl = document.createElement('div');
+      sysEl.className = 'system-msg';
+      sysEl.textContent = text;
+      box.appendChild(sysEl);
+      box.scrollTop = box.scrollHeight;
     });
 
     socket.on('all-messages-deleted', () => document.getElementById('chat-box').innerHTML = '');
